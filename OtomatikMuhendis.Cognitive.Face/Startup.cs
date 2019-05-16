@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.CognitiveServices.Vision.Face;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OtomatikMuhendis.Cognitive.Face.Core;
 
 namespace OtomatikMuhendis.Cognitive.Face
 {
@@ -31,6 +33,10 @@ namespace OtomatikMuhendis.Cognitive.Face
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            var subscriptionKey = Environment.GetEnvironmentVariable(AzureCognitiveServiceParameters.SubscriptionKeyName);
+
+            services.AddTransient<IFaceClient>(s =>
+                new FaceClient(new ApiKeyServiceClientCredentials(subscriptionKey)) { Endpoint = AzureCognitiveServiceParameters.Endpoint });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
