@@ -63,7 +63,7 @@ namespace OtomatikMuhendis.Cognitive.Face.Controllers
             }
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }
