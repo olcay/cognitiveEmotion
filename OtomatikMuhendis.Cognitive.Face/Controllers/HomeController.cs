@@ -31,36 +31,67 @@ namespace OtomatikMuhendis.Cognitive.Face.Controllers
         [HttpPost]
         public async Task<IActionResult> Face([FromBody] FaceViewModel model)
         {
-            var filePath = _environment.WebRootPath + Path.DirectorySeparatorChar + 
+            var filePath = _environment.WebRootPath + Path.DirectorySeparatorChar +
                            "uploads" + Path.DirectorySeparatorChar + Convert.ToString(Guid.NewGuid()) + ".jpg";
 
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                using (var binaryWriter = new BinaryWriter(fileStream))
+            FaceAttributeType[] faceAttributes = { FaceAttributeType.Emotion };
 
+            Emotion emotion = null;
+
+            try
+            {
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    var byteArray = Convert.FromBase64String(model.ImageData);
-                    binaryWriter.Write(byteArray);
-                    binaryWriter.Close();
+                    using (var binaryWriter = new BinaryWriter(fileStream))
+
+                    {
+                        var byteArray = Convert.FromBase64String(model.ImageData);
+                        binaryWriter.Write(byteArray);
+                        binaryWriter.Close();
+                    }
                 }
             }
-
-            FaceAttributeType[] faceAttributes =
+            catch (Exception e)
             {
-                FaceAttributeType.Emotion
-            };
+                Console.WriteLine("File not created." + e.Message);
+            }
 
-            using (Stream imageStream = new FileStream(filePath, FileMode.Open))
+            try
             {
-                var faceList = await _faceClient.Face.DetectWithStreamAsync(
+                using (Stream imageStream = new FileStream(filePath, FileMode.Open))
+                {
+                    var faceList = await _faceClient.Face.DetectWithStreamAsync(
                         imageStream, true, false, faceAttributes);
 
-                if (faceList.Any())
-                {
-                    return Ok(faceList[0].FaceAttributes.Emotion);
+                    if (faceList.Any())
+                    {
+                        emotion = faceList[0].FaceAttributes.Emotion;
+                    }
                 }
-                return Ok();
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Face not detected." + e.Message);
+            }
+
+            try
+            {
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                    Console.WriteLine("File deleted.");
+                }
+                else
+                {
+                    Console.WriteLine("File not found.");
+                }
+            }
+            catch (IOException ioExp)
+            {
+                Console.WriteLine(ioExp.Message);
+            }
+
+            return Ok(emotion);
         }
 
         public IActionResult About()
