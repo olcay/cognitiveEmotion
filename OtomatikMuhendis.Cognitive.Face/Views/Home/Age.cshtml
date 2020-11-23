@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Can I go out?";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Can I go out?</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-9">
+            <div id="wrap_video">
+                <div id="video_box">
+                    <div id="video_overlays"><img src="~/asset/smileys/neutral.png" id="imgResult" /></div>
+                    <div>
+                        <video width=800 height=600 id="video" controls autoplay></video>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <p>There is a curfew in Turkey as a measurement against Covid-19 but its complex logic depends on your age, the current time and the day of the week. AI can help us to decide who can go out or not.</p>
+            <h3 id="txtAge"></h3>
+            <h3 id="txtResult"></h3>
+
+        </div>
+    </div>
+</div>
+
+<canvas id="canvas" width="800" height="600" style="display:none;"></canvas>
+
+
+@section Scripts{
+    <script>
+        var pictureModule = new PictureModule('/Face/DetectAge',
+            function (data) {
+                if (data.age) {
+                    var smiley = data.isFree ? 'happiness' : 'sadness';
+                    $("#imgResult").attr("src", "/asset/smileys/" + smiley + ".png");
+
+                    $("#txtAge").text('You look like ' + data.age + ' years old.');
+                    $("#txtResult").text(data.isFree
+                        ? 'You are free to go out but do not forget to wear a mask and keep the social distance.'
+                        : 'It is better to stay at home and learn some AI.');
+                }
+            });
+        document.addEventListener("DOMContentLoaded", pictureModule.init);
+    </script>
+}

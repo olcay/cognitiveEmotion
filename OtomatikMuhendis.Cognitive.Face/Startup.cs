@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Vision.Face;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OtomatikMuhendis.Cognitive.Face.Core;
+using OtomatikMuhendis.Cognitive.Face.Services;
 
 namespace OtomatikMuhendis.Cognitive.Face
 {
@@ -37,6 +34,9 @@ namespace OtomatikMuhendis.Cognitive.Face
 
             services.AddTransient<IFaceClient>(s =>
                 new FaceClient(new ApiKeyServiceClientCredentials(subscriptionKey)) { Endpoint = AzureCognitiveServiceParameters.Endpoint });
+            services.AddTransient<IFaceService, FaceService>();
+
+            services.AddTransient<ICurfewService, CurfewService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
