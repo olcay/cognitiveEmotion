@@ -25,7 +25,7 @@ namespace OtomatikMuhendis.Cognitive.Face.Controllers
             var faceAttributes = await _faceService.DetectFaceAttributesAsync(model.ImageData,
                 FaceAttributeType.Age);
 
-            var nowInTurkey = DateTimeOffset.Now.AddHours(3);
+            var nowInTurkey = DateTime.UtcNow.AddHours(3);
 
             var curfewResult = new CurfewResult { Age = faceAttributes?.Age };
             var curfewRequest = new CurfewRequest(curfewResult.Age ?? 0, nowInTurkey.DayOfWeek, nowInTurkey.Hour);
