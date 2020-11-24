@@ -25,11 +25,10 @@ namespace OtomatikMuhendis.Cognitive.Face.Controllers
             var faceAttributes = await _faceService.DetectFaceAttributesAsync(model.ImageData,
                 FaceAttributeType.Age);
 
-            var info = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
-            var dateTime = TimeZoneInfo.ConvertTime(DateTimeOffset.Now, info);
+            var nowInTurkey = DateTimeOffset.Now.AddHours(3);
 
             var curfewResult = new CurfewResult { Age = faceAttributes?.Age };
-            var curfewRequest = new CurfewRequest(curfewResult.Age ?? 0, dateTime.DayOfWeek, dateTime.Hour);
+            var curfewRequest = new CurfewRequest(curfewResult.Age ?? 0, nowInTurkey.DayOfWeek, nowInTurkey.Hour);
 
             curfewResult.IsFree = _curfewService.IsFreeToGoOut(curfewRequest);
 
