@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtomatikMuhendis.Cognitive.Face", "OtomatikMuhendis.Cognitive.Face\OtomatikMuhendis.Cognitive.Face.csproj", "{AAA06727-61F3-4E14-A7D5-35DFFBC4CF77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtomatikMuhendis.Cognitive.Face", "OtomatikMuhendis.Cognitive.Face\OtomatikMuhendis.Cognitive.Face.csproj", "{AAA06727-61F3-4E14-A7D5-35DFFBC4CF77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtomatikMuhendis.Cognitive.Face.Specs", "OtomatikMuhendis.Cognitive.Face.Specs\OtomatikMuhendis.Cognitive.Face.Specs.csproj", "{BCF9EDB1-D513-4AE6-90CE-1DBD5502074C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{AAA06727-61F3-4E14-A7D5-35DFFBC4CF77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAA06727-61F3-4E14-A7D5-35DFFBC4CF77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAA06727-61F3-4E14-A7D5-35DFFBC4CF77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCF9EDB1-D513-4AE6-90CE-1DBD5502074C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCF9EDB1-D513-4AE6-90CE-1DBD5502074C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCF9EDB1-D513-4AE6-90CE-1DBD5502074C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCF9EDB1-D513-4AE6-90CE-1DBD5502074C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

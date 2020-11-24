@@ -1,9 +1,9 @@
-﻿using System;
+﻿using OtomatikMuhendis.Cognitive.Face.Core;
 
 namespace OtomatikMuhendis.Cognitive.Face.Services
 {
     public interface ICurfewService
     {
-        bool IsFreeToGoOut(double? age, DateTimeOffset time);
+        bool IsFreeToGoOut(CurfewRequest curfewRequest);
     }
 }

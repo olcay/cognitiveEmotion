@@ -11,12 +11,8 @@ namespace OtomatikMuhendis.Cognitive.Face.Controllers
             return View();
         }
 
+        [Route("Age")]
         public IActionResult Age()
-        {
-            return View();
-        }
-
-        public IActionResult About()
         {
             return View();
         }

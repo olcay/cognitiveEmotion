@@ -1,51 +1,21 @@
-﻿using System;
+﻿using OtomatikMuhendis.Cognitive.Face.Core;
 
 namespace OtomatikMuhendis.Cognitive.Face.Services
 {
     public class CurfewService : ICurfewService
     {
-        private bool IsWeekendDay(DateTimeOffset date)
+        public bool IsFreeToGoOut(CurfewRequest curfewRequest)
         {
-            return date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday;
-        }
-
-        public bool IsFreeToGoOut(double? age, DateTimeOffset time)
-        {
-            if (age == null)
-            {
-                Console.WriteLine("Age is not calculated.");
+            if (curfewRequest.IsWeekend() &&
+                curfewRequest.IsOutsideOfHours(10, 20))
                 return false;
-            }
 
-            var info = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
-            var dateTime = TimeZoneInfo.ConvertTime(time, info);
+            if (curfewRequest.IsUnder20())
+                return curfewRequest.IsBetweenHours(13, 16);
 
-            if (!IsWeekendDay(dateTime))
-            {
-                if (age <= 20)
-                {
-                    return !(dateTime.Hour <= 13 || dateTime.Hour >= 16);
-                }
+            if (curfewRequest.IsOver64())
+                return curfewRequest.IsBetweenHours(10, 13);
 
-                if (age > 65)
-                {
-                    return (dateTime.Hour >= 10 || dateTime.Hour <= 13);
-                }
-                return true;
-            }
-
-            if (dateTime.Hour <= 10) return false;
-            if (dateTime.Hour >= 20) return false;
-            if (dateTime.Hour > 20) return true;
-            if (age <= 20)
-            {
-                return dateTime.Hour > 13 && dateTime.Hour < 16;
-            }
-
-            if (age > 65)
-            {
-                return dateTime.Hour >= 10 || dateTime.Hour <= 13;
-            }
             return true;
         }
     }

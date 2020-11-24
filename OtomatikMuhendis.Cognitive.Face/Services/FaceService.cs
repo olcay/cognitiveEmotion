@@ -62,22 +62,19 @@ namespace OtomatikMuhendis.Cognitive.Face.Services
             {
                 Console.WriteLine("Face not detected." + e.Message);
             }
-
-            try
+            finally
             {
-                if (File.Exists(filePath))
+                try
                 {
-                    File.Delete(filePath);
-                    Console.WriteLine("File deleted.");
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
                 }
-                else
+                catch (IOException ioExp)
                 {
-                    Console.WriteLine("File not found.");
+                    Console.WriteLine(ioExp.Message);
                 }
-            }
-            catch (IOException ioExp)
-            {
-                Console.WriteLine(ioExp.Message);
             }
 
             return null;

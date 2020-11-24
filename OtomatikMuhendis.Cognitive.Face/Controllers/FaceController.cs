@@ -22,11 +22,16 @@ namespace OtomatikMuhendis.Cognitive.Face.Controllers
         [HttpPost]
         public async Task<IActionResult> DetectAge([FromBody] FaceViewModel model)
         {
-            var faceAttributes = await _faceService.DetectFaceAttributesAsync(model.ImageData, 
+            var faceAttributes = await _faceService.DetectFaceAttributesAsync(model.ImageData,
                 FaceAttributeType.Age);
 
+            var info = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+            var dateTime = TimeZoneInfo.ConvertTime(DateTimeOffset.Now, info);
+
             var curfewResult = new CurfewResult { Age = faceAttributes?.Age };
-            curfewResult.IsFree = _curfewService.IsFreeToGoOut(curfewResult.Age, DateTimeOffset.Now);
+            var curfewRequest = new CurfewRequest(curfewResult.Age ?? 0, dateTime.DayOfWeek, dateTime.Hour);
+
+            curfewResult.IsFree = _curfewService.IsFreeToGoOut(curfewRequest);
 
             return Ok(curfewResult);
         }
@@ -34,7 +39,7 @@ namespace OtomatikMuhendis.Cognitive.Face.Controllers
         [HttpPost]
         public async Task<IActionResult> DetectEmotion([FromBody] FaceViewModel model)
         {
-            var faceAttributes = await _faceService.DetectFaceAttributesAsync(model.ImageData, 
+            var faceAttributes = await _faceService.DetectFaceAttributesAsync(model.ImageData,
                 FaceAttributeType.Emotion);
 
             return Ok(faceAttributes?.Emotion);
